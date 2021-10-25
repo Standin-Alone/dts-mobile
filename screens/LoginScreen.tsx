@@ -4,6 +4,9 @@ import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import Images from '../constants/Images';
 import Layout from '../constants/Layout';
+import Colors from '../constants/Colors';
+import {Field} from 'redux-form';
+
 
 
 export default function LoginScreen({ navigation }: RootStackScreenProps<'LoginScreen'>) {
@@ -11,6 +14,11 @@ export default function LoginScreen({ navigation }: RootStackScreenProps<'LoginS
   return (
     <View style={styles.container}>
         <Image source={Images.splash_screen_logo} style={styles.logo} />        
+        <View style={styles.login_form}>
+            <Field name="username" label="username"/>
+            
+
+        </View>
     </View>
   );
   
@@ -28,6 +36,10 @@ const styles = StyleSheet.create({
     marginVertical: (Layout.window.height / 100) * 10,
     fontSize: 24,
     fontWeight: 'bold',
+  },
+  login_form:{
+    backgroundColor:Colors.color_palette.yellow_smoke,
+    marginVertical: (Layout.window.height / 100) * 10
   },
   logo:{
       width:200,
