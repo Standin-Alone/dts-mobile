@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, TouchableOpacity,Image,TextInput,Icon  } from 'react-native';
+import { StyleSheet, TouchableOpacity,Image,TextInput  } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import Images from '../constants/Images';
@@ -36,13 +36,18 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
 
       NetInfo.fetch().then(async (response)=>{
         if(response.isConnected){
-          axios.post(ipConfig.ipAddress+'MobileApp/Mobile/verify_otp',data).then((response)=>{
+          axios.post(ipConfig.ipAddress+'MobileApp/Mobile/verify_otp',data).then( async (response)=>{
             console.warn(response.data);                  
             if(response.data['Message'] == 'true'){
               
+              AsyncStorage.setItem('user_id',response.data['user_id']);
+              AsyncStorage.setItem('full_name',response.data['full_name']);
+              AsyncStorage.setItem('office',response.data['office']);
+
               setError(false);
               setLoading(false);
-              navigation.replace('Root',{})
+              navigation.replace('Root');
+
             }else{
               setLoading(false);
               setError(true);
@@ -94,7 +99,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
 
   // validation function 
   const validation = Yup.object({
-    otp: Yup.number().required("Please enter your otp."),
+    otp: Yup.number().required("Please enter your OTP."),
   });
   
   
@@ -124,17 +129,22 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
                    <Fumi
                       label={'OTP'}
                       iconClass={FontAwesomeIcon}
-                      iconName={'key'}
+                      iconName={'key'}                      
                       iconColor={Colors.color_palette.orange}
                       iconSize={20}
                       iconWidth={40}
                       inputPadding={16}
                       style={styles.loginTextInput}
-                      onChangeText={handleChange('otp')}           
-                      secureTextEntry={true}
+                      onChangeText={handleChange('otp')}                              
                       keyboardType={'numeric'}
                       maxLength={6}
                     />
+                     {errors.otp  && touched.otp ?
+                      <Text style={styles.warning}> {errors.otp}</Text> : null
+                    }
+                    {error && 
+                      <Text style={styles.error}>Incorrect OTP </Text>
+                    }
 
                     <Button 
                       textStyle={styles.textButton} 
@@ -186,14 +196,6 @@ const styles = StyleSheet.create({
       width:200,
       height:200
   },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
   otp: { textAlign: "center", fontSize: 25,color:Colors.dark.background },
   otp_desc: { textAlign: "center", fontSize: 18,marginBottom:20,color:Colors.dark.background},
   loginTextInput:{  
@@ -220,6 +222,22 @@ const styles = StyleSheet.create({
     height:50,
     paddingTop:10,    
     width: (Layout.window.width / 100 ) * 120,
+  },
+  error:{ 
+    color: Colors.light.background,
+    backgroundColor:Colors.danger,
+    borderRadius:5, 
+    width: Layout.window.width - 40,
+    padding:10,
+    marginBottom:20
+  },
+  warning:{ 
+    color: Colors.light.background,
+    backgroundColor:Colors.warning,
+    borderRadius:5, 
+    width: Layout.window.width - 40,
+    padding:10,
+    marginBottom:20
   }
 
 });
