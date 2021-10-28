@@ -30,7 +30,9 @@ const linking: LinkingOptions<RootStackParamList> = {
       Modal: 'modal',
       NotFound: '*',
       SplashScreenContainer: 'splash_screen',
-      LoginScreen: 'LoginScreen'
+      LoginScreen: 'LoginScreen',
+      OTPScreen: 'OTPScreen',
+      QRCodeScreen: 'QRCodeScreen',
 
     },
   },

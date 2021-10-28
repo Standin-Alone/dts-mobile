@@ -19,6 +19,8 @@ export type RootStackParamList = {
   NotFound: undefined;
   SplashScreenContainer: undefined;
   LoginScreen: undefined;
+  OTPScreen: undefined;
+  QRCodeScreen: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

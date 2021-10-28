@@ -18,7 +18,8 @@ export default function SplashScreenContainer({ navigation }: RootStackScreenPro
 
             navigation.replace('LoginScreen');
           }else{
-            alert('No Internet Connection.')
+            // alert('No Internet Connection.')
+            navigation.replace('LoginScreen');
           }
       });
     },5000)

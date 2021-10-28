@@ -18,7 +18,12 @@ export default {
   },
   color_palette : {
     yellow_smoke : '#F9F3DF',
-    orange_smoke : '#FFC898'
-
-  }
+    orange_smoke : '#FFC898',
+    orange:'#f95a25',
+    base: '#CDF2CA'
+  },
+  fade:'#ddd',
+  danger:'#ff5b57cc',
+  warning: '#FF9B05',
+  success: '#66BB6A',
 };
