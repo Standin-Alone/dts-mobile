@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, TouchableOpacity,Image,TextInput,Icon  } from 'react-native';
+import { StyleSheet, TouchableOpacity,Image,TextInput,KeyboardAvoidingView } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import Images from '../constants/Images';
@@ -13,7 +13,7 @@ import axios from 'axios';
 import * as ipConfig from '../ipconfig';
 import * as Yup from 'yup';
 import NetInfo from "@react-native-community/netinfo";
-
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default  function  LoginScreen({ navigation }: RootStackScreenProps<'LoginScreen'>){
 
@@ -57,7 +57,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
 
   // validation function 
   const validation = Yup.object({
-    username: Yup.string().required("Please enter username").email(),
+    username: Yup.string().required("Please enter username").email("Username must be valid email."),
     password: Yup.string().required("Please enter password")
 
   });
@@ -75,7 +75,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
               // validateOnChange={false}           
             >
             {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) =>(
-              <View style={styles.formBody}>
+              <KeyboardAvoidingView style={styles.formBody}>
                    <Fumi
                       label={'Username'}
                       iconClass={FontAwesomeIcon}
@@ -89,7 +89,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                       keyboardType="email-address"
                     />
                     {errors.username  && touched.username ?
-                      <Text style={styles.warning}> {errors.username}</Text> : null
+                      <Text style={styles.warning}><Icon name="exclamation-triangle" size={20}/> {errors.username}</Text> : null
                     }
 
                     <Fumi                                            
@@ -105,7 +105,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                       onChangeText={handleChange('password')}                                           
                     />
                      {errors.password && touched.password ?
-                      <Text style={styles.warning}> {errors.password}</Text> :null
+                      <Text style={styles.warning}><Icon name="exclamation-triangle" size={20}/> {errors.password}</Text> :null
                     }
 
 
@@ -122,7 +122,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                     > 
                       Login
                     </Button>
-              </View>  
+              </KeyboardAvoidingView>  
               )}
               
             </Formik>
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#CDF2CA'
+    backgroundColor:'#CDF2CA',
+    minHeight: Math.round(Layout.window.height)
   },
   title: {
     marginVertical: (Layout.window.height / 100) * 10,
@@ -155,8 +156,8 @@ const styles = StyleSheet.create({
     marginVertical: (Layout.window.height / 100) * 10
   },
   logo:{
-      width:200,
-      height:200
+      width:150,
+      height:150,      
   },
   link: {
     marginTop: 15,
@@ -193,11 +194,9 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   warning:{ 
-    color: Colors.light.background,
-    backgroundColor:Colors.warning,
+    color: Colors.danger,
     borderRadius:5, 
     width: Layout.window.width - 40,
-    padding:10,
     marginBottom:20
   }
 

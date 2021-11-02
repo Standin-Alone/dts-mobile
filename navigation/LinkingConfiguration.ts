@@ -33,6 +33,7 @@ const linking: LinkingOptions<RootStackParamList> = {
       LoginScreen: 'LoginScreen',
       OTPScreen: 'OTPScreen',
       QRCodeScreen: 'QRCodeScreen',
+      ReceiptForm: 'ReceiptForm',
 
     },
   },

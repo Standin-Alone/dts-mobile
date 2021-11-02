@@ -25,14 +25,16 @@ import OTPScreen from '../screens/OTPScreen';
 
 
 
+
 // tranaction screens
 import QRCodeScreen from '../screens/transactions/QRCodeScreen';
+import ReceiptForm from '../screens/transactions/ReceiptForm';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
       <RootNavigator />
     </NavigationContainer>
   );
@@ -50,7 +52,8 @@ function RootNavigator() {
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
-      <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code'}}/>
+      <Stack.Screen name="ReceiptForm" component={ReceiptForm}/>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -88,20 +91,20 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color}/>,
           tabBarActiveTintColor: Colors.color_palette.orange,
           tabBarInactiveTintColor:Colors.dark.background,
-          // headerRight: () => (
-          //   <Pressable
-          //     onPress={() => navigation.navigate('Modal')}
-          //     style={({ pressed }) => ({
-          //       opacity: pressed ? 0.5 : 1,
-          //     })}>
-          //     <FontAwesome
-          //       name="info-circle"
-          //       size={25}
-          //       color={Colors.color_palette.orange}
-          //       style={{ marginRight: 15 }}
-          //     />
-          //   </Pressable>
-          // ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Modal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="sign-out"
+                size={25}
+                color={Colors.color_palette.orange}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
         })
       }
         

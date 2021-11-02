@@ -12,7 +12,7 @@ import Colors from '../constants/Colors';
 const actions = [
   {
     text: "Scan QR Code",
-    icon: <Icon name="qrcode" size={20}/>,
+    icon: <Icon name="qrcode" size={20} color={Colors.light.background}/>,
     name: "qr_code_screen",
     buttonSize:50, 
     color:Colors.color_palette.orange,
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor:Colors.color_palette.yellow_smoke
   },
   title: {
     fontSize: 20,

@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import { StyleSheet, TouchableOpacity,Image,TextInput  } from 'react-native';
+import React,{useState} from 'react';
+import { StyleSheet,Image  } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 import Images from '../constants/Images';
@@ -14,6 +14,7 @@ import * as ipConfig from '../ipconfig';
 import * as Yup from 'yup';
 import NetInfo from "@react-native-community/netinfo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'OTPScreen'>){
 
@@ -23,7 +24,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
   const params = route.params;
 
   // OTP function
-  const handleOTP = (values)=>{
+  const handleOTP = (values,{resetForm})=>{
      
     let data = {
       user_id:params.user_id,
@@ -33,11 +34,12 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
       setLoading(true);
       setError(false);      
       // axios post here
-
+      console.warn(params);
       NetInfo.fetch().then(async (response)=>{
+        
         if(response.isConnected){
           axios.post(ipConfig.ipAddress+'MobileApp/Mobile/verify_otp',data).then( async (response)=>{
-            console.warn(response.data);                  
+            setError(false);
             if(response.data['Message'] == 'true'){
               
               AsyncStorage.setItem('user_id',response.data['user_id']);
@@ -49,12 +51,14 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
               navigation.replace('Root');
 
             }else{
+              resetForm();
               setLoading(false);
               setError(true);
             } 
           }).catch((err)=>{
             console.warn(err.response.data);
             setLoading(false);
+            setError(true);
           });
       }else{
         alert('No internet connection');
@@ -83,6 +87,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
               setError(false);
               setResendLoading(false);              
             }else{
+              
               setResendLoading(false);
               setError(true);
             } 
@@ -113,7 +118,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
 
             <Formik
               initialValues = {{otp:''}}
-              onSubmit= {(values)=>handleOTP(values)}      
+              onSubmit= {(values, { setSubmitting, resetForm })=>handleOTP(values,{resetForm})}      
               validationSchema = {validation}      
             >
 
@@ -136,11 +141,12 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
                       inputPadding={16}
                       style={styles.loginTextInput}
                       onChangeText={handleChange('otp')}                              
+                      value={values.otp}
                       keyboardType={'numeric'}
                       maxLength={6}
                     />
                      {errors.otp  && touched.otp ?
-                      <Text style={styles.warning}> {errors.otp}</Text> : null
+                      <Text style={styles.warning}><Icon name="exclamation-triangle" size={20}/>  {errors.otp}</Text> : null
                     }
                     {error && 
                       <Text style={styles.error}>Incorrect OTP </Text>
@@ -182,7 +188,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#CDF2CA'
+    backgroundColor:'#CDF2CA',
+    minHeight: Math.round(Layout.window.height)
   },
   title: {
     marginVertical: (Layout.window.height / 100) * 10,
@@ -190,11 +197,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   otp_form:{      
-    marginVertical: (Layout.window.height / 100) * 10
+    marginVertical: (Layout.window.height / 100) * 5
   },
   logo:{
-      width:200,
-      height:200
+      width:150,
+      height:150
   },
   otp: { textAlign: "center", fontSize: 25,color:Colors.dark.background },
   otp_desc: { textAlign: "center", fontSize: 18,marginBottom:20,color:Colors.dark.background},
@@ -232,11 +239,9 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   warning:{ 
-    color: Colors.light.background,
-    backgroundColor:Colors.warning,
+    color: Colors.danger,
     borderRadius:5, 
     width: Layout.window.width - 40,
-    padding:10,
     marginBottom:20
   }
 

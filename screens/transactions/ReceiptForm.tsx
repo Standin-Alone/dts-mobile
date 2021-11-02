@@ -18,7 +18,7 @@ import {
   useIsFocused,
 } from "@react-navigation/native";
 
-export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTPScreen'>){
+export default  function  ReceiptForm({ navigation }: RootStackScreenProps<'ReceiptForm'>){
 
   const navigation_state = useNavigationState(
     (state) => state.routes[state.index].name
@@ -47,37 +47,26 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
     })();
   }, [navigation_state]);
 
-  // QR Code function
-  const handleQRCodeScanned = async ({ type, data }) => {
+  // Release function
+  const handleRelease = async ({ type, data }) => {
 
-    // alert(data);
-    navigation.replace('ReceiptForm');
     
 
   }
 
+
+  const handleReceive = async ({ type, data }) => {
+
+    
+
+}
   
 
 
   // design start here
   return (
     <View style={styles.container}>        
-      
-        {scanned == false ? (        
-        <Camera
-        onBarCodeScanned={scanned ? handleQRCodeScanned : handleQRCodeScanned}
-        barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-        }}
-        ratio='16:9'
-        style={[StyleSheet.absoluteFillObject,styles.container]}
-        >        
-          <BarcodeMask edgeColor={Colors.color_palette.orange} showAnimatedLine={false}/>                
-        </Camera>
-
-        ) : (
-        <Text> No Access camera</Text>
-        )}
+           
     </View>
   );
   
@@ -89,17 +78,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    backgroundColor:Colors.color_palette.base
+    backgroundColor:Colors.color_palette.yellow_smoke
     
   },
-  formBody:{
-    flex: 1,
-    backgroundColor:Colors.color_palette.base
-  },
-  qrForm:{
-    flex: 1,
-  },
-  
+
 
 
 });
