@@ -66,7 +66,7 @@ export default  function  ReceiptForm({ navigation }: RootStackScreenProps<'Rece
   // design start here
   return (
     <View style={styles.container}>        
-           
+          <View>Tracking Number</View>
     </View>
   );
   
