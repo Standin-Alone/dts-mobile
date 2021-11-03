@@ -6,7 +6,8 @@ import { RootStackScreenProps } from '../types';
 import Images from '../constants/Images';
 import Layout from '../constants/Layout';
 import NetInfo from "@react-native-community/netinfo";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Colors from '../constants/Colors';
 SplashScreen.preventAutoHideAsync().then(result => console.log(`SplashScreen.preventAutoHideAsync() succeeded: ${result}`)).catch(console.warn);
 export default function SplashScreenContainer({ navigation }: RootStackScreenProps<'SplashScreenContainer'>) {
   useEffect(()=>{
@@ -15,8 +16,14 @@ export default function SplashScreenContainer({ navigation }: RootStackScreenPro
     setTimeout(()=>{
       NetInfo.fetch().then(async (response)=>{
           if(response.isConnected){
+            let user_id = await AsyncStorage.getItem('user_id');
 
-            navigation.replace('LoginScreen');
+            if(user_id){
+              navigation.replace('Root');
+            }else{
+              navigation.replace('LoginScreen');
+            }
+            
           }else{
             // alert('No Internet Connection.')
             navigation.replace('LoginScreen');
@@ -40,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#CDF2CA'
+    backgroundColor:Colors.new_color_palette.main_background
   },
   title: {
     marginVertical: (Layout.window.height / 100) * 10,

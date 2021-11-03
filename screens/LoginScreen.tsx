@@ -80,7 +80,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                       label={'Username'}
                       iconClass={FontAwesomeIcon}
                       iconName={'user'}
-                      iconColor={Colors.color_palette.orange}
+                      iconColor={Colors.new_color_palette.orange}
                       iconSize={20}
                       iconWidth={40}
                       inputPadding={16}
@@ -96,7 +96,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                       label={'Password'}
                       iconClass={FontAwesomeIcon}
                       iconName={'key'}
-                      iconColor={Colors.color_palette.orange}
+                      iconColor={Colors.new_color_palette.orange}
                       iconSize= {20}
                       iconWidth={40}
                       inputPadding={16}
@@ -115,9 +115,10 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                     }
                     <Button 
                       textStyle={styles.textButton} 
-                      style={{borderColor:Colors.color_palette.orange}} 
-                      activityIndicatorColor={Colors.color_palette.orange} 
+                      style={{borderColor:Colors.new_color_palette.orange}} 
+                      activityIndicatorColor={Colors.new_color_palette.orange} 
                       isLoading={isLoading}
+                      disabledStyle={{opacity:1}}
                       onPress ={handleSubmit}
                     > 
                       Login
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#CDF2CA',
+    backgroundColor:Colors.new_color_palette.main_background,
     minHeight: Math.round(Layout.window.height)
   },
   title: {
@@ -176,11 +177,11 @@ const styles = StyleSheet.create({
        
   },
   formBody:{
-    backgroundColor:Colors.color_palette.base
+    backgroundColor:Colors.new_color_palette.main_background
   },
   textButton:{
     fontSize: 18,
-    color:Colors.color_palette.orange,
+    color:Colors.new_color_palette.orange,
     height:50,
     paddingTop:10,    
     width: (Layout.window.width / 100 ) * 90,

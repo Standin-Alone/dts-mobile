@@ -1,22 +1,17 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, TouchableOpacity,Image,TextInput,Icon  } from 'react-native';
+import { StyleSheet  } from 'react-native';
 import { Text, View } from '../../components/Themed';
 import { RootStackScreenProps } from '../../types';
-import Images from '../../constants/Images';
-import Layout from '../../constants/Layout';
 import Colors from '../../constants/Colors';
-import { Formik } from 'formik';
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-import { Fumi  } from 'react-native-textinput-effects';
-import Button from 'apsl-react-native-button';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from "expo-barcode-scanner";
 import BarcodeMask from 'react-native-barcode-mask';
-import {
-  useNavigation,
+import {  
   useNavigationState,
-  useIsFocused,
 } from "@react-navigation/native";
+import NetInfo from "@react-native-community/netinfo";
+import axios from 'axios';
+import * as ipConfig from '../../ipconfig';
 
 export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTPScreen'>){
 
@@ -50,8 +45,33 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
   // QR Code function
   const handleQRCodeScanned = async ({ type, data }) => {
 
-    // alert(data);
-    navigation.replace('ReceiptForm');
+      let payload = {
+        document_number : data
+      } 
+
+      
+    
+      NetInfo.fetch().then(async (response)=>{
+        if(response.isConnected){
+          axios.post(ipConfig.ipAddress+'MobileApp/Mobile/get_scanned_document',payload).then((response)=>{
+                        
+            if(response.data['Message'] == 'true'){
+              
+           
+              navigation.push('ReceiveForm',{document_info:response.data['doc_info']})
+            }else{
+              
+            } 
+          }).catch((err)=>{
+            console.warn(err.response.data);
+            
+          });
+      }else{
+        alert('No internet connection');
+      }
+    });
+
+    
     
 
   }

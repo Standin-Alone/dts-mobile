@@ -9,6 +9,9 @@ import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
+import { Root, Popup } from 'react-native-popup-confirm-toast';
+
+import { StyleSheet } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -28,13 +31,14 @@ import OTPScreen from '../screens/OTPScreen';
 
 // tranaction screens
 import QRCodeScreen from '../screens/transactions/QRCodeScreen';
-import ReceiptForm from '../screens/transactions/ReceiptForm';
+import ReceiveForm from '../screens/transactions/ReceiveForm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DefaultTheme : DefaultTheme}>
+      >
       <RootNavigator />
     </NavigationContainer>
   );
@@ -48,12 +52,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="LoginScreen">      
+    <Stack.Navigator initialRouteName="SplashScreen">      
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
       <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code'}}/>
-      <Stack.Screen name="ReceiptForm" component={ReceiptForm}/>
+      <Stack.Screen name="ReceiveForm" component={ReceiveForm}/>
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -74,9 +78,14 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
+      
       initialRouteName="TabOne"
+      
       screenOptions={{
+        keyboardHidesTabBar: true,
         tabBarActiveTintColor: Colors.color_palette.orange,
+        position:'absolute'
+        
         
         
               
@@ -84,16 +93,41 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={HomeScreen}
+        
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
 
           
-          title: 'Home',
+          title: 'My Documents',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color}/>,
           tabBarActiveTintColor: Colors.color_palette.orange,
           tabBarInactiveTintColor:Colors.dark.background,
+          headerTransparent:true,
+          headerTitleStyle:styles.homeTitle,
           headerRight: () => (
+            
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={ async () => {
+                    // AsyncStorage.clear();
+                    // navigation.replace('SplashScreenContainer');
+
+
+                    Popup.show({
+                      type: 'confirm',
+                      title: 'Warning',
+                      textBody: 'Do you want to sign out?',
+                      
+                      buttonText: 'Sign Out',
+                      confirmText:'Cancel',
+                      callback: () => Popup.hide(),
+                      okButtonStyle:styles.confirmButton,
+                      okButtonTextStyle: styles.confirmButtonText
+                    
+                    })
+
+
+
+                    
+              }}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}>
@@ -135,3 +169,23 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
+
+
+const styles = StyleSheet.create({
+confirmButton:{
+  backgroundColor:'white',
+  color:Colors.new_color_palette.orange,
+  borderColor:Colors.new_color_palette.orange,
+  borderWidth:1
+},
+confirmButtonText:{  
+  color:Colors.new_color_palette.orange,
+  
+  
+},
+homeTitle:{
+  color:Colors.new_color_palette.orange,
+  fontSize:20,
+}
+
+});

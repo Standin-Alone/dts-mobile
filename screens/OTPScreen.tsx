@@ -41,10 +41,12 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
           axios.post(ipConfig.ipAddress+'MobileApp/Mobile/verify_otp',data).then( async (response)=>{
             setError(false);
             if(response.data['Message'] == 'true'){
-              
+              console.warn(response.data);
               AsyncStorage.setItem('user_id',response.data['user_id']);
               AsyncStorage.setItem('full_name',response.data['full_name']);
               AsyncStorage.setItem('office',response.data['office']);
+              AsyncStorage.setItem('email',response.data['email']);
+              AsyncStorage.setItem('mobile',response.data['mobile']);
 
               setError(false);
               setLoading(false);
@@ -135,7 +137,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
                       label={'OTP'}
                       iconClass={FontAwesomeIcon}
                       iconName={'key'}                      
-                      iconColor={Colors.color_palette.orange}
+                      iconColor={Colors.new_color_palette.orange}
                       iconSize={20}
                       iconWidth={40}
                       inputPadding={16}
@@ -154,8 +156,8 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
 
                     <Button 
                       textStyle={styles.textButton} 
-                      style={{borderColor:Colors.color_palette.orange}} 
-                      activityIndicatorColor={Colors.color_palette.orange} 
+                      style={{borderColor:Colors.new_color_palette.orange}} 
+                      activityIndicatorColor={Colors.new_color_palette.orange} 
                       isLoading={isLoading}
                       onPress ={handleSubmit}
                     > 
@@ -188,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:'#CDF2CA',
+    backgroundColor: Colors.new_color_palette.main_background,
     minHeight: Math.round(Layout.window.height)
   },
   title: {
@@ -214,11 +216,11 @@ const styles = StyleSheet.create({
        
   },
   formBody:{
-    backgroundColor:Colors.color_palette.base
+    backgroundColor:Colors.new_color_palette.main_background
   },
   textButton:{
     fontSize: 18,
-    color:Colors.color_palette.orange,
+    color:Colors.new_color_palette.orange,
     height:50,
     paddingTop:10,    
     width: (Layout.window.width / 100 ) * 120,
