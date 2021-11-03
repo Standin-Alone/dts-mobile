@@ -98,9 +98,9 @@ function BottomTabNavigator() {
 
           
           title: 'My Documents',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color}/>,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={Colors.new_color_palette.blue_background}/>,
           tabBarActiveTintColor: Colors.color_palette.orange,
-          tabBarInactiveTintColor:Colors.dark.background,
+          tabBarInactiveTintColor:Colors.new_color_palette.blue_background,
           headerTransparent:true,
           headerTitleStyle:styles.homeTitle,
           headerRight: () => (
@@ -150,9 +150,9 @@ function BottomTabNavigator() {
         component={ProfileScreen}
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color}  />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={Colors.new_color_palette.blue_background}  />,
           tabBarActiveTintColor: Colors.color_palette.orange,
-          tabBarInactiveTintColor:Colors.dark.background
+          tabBarInactiveTintColor:Colors.new_color_palette.blue_background
           
         }}
       />

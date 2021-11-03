@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { StyleSheet,ScrollView,KeyboardAvoidingView } from 'react-native';
+import { StyleSheet,ScrollView,KeyboardAvoidingView,FlatList,Text,View } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+
 import { RootTabScreenProps } from '../types';
 import { FloatingAction } from "react-native-floating-action";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +13,37 @@ import { Fumi  } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+
+  const DATA = [
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending"
+    },
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending",
+    },
+ 
+  ];
+  
+  const renderItem = ({item})=>(
+    <View style={styles.card}>  
+        <Text style={styles.documentNumber}>{item.document_number}</Text>
+        <Text style={styles.documentTypeLabel}>Document Type</Text>
+          <Text style={styles.itemValue}>{item.type}</Text>
+        <Text style={styles.documentTypeLabel}>Subject</Text>
+          <Text style={styles.itemValue}>{item.subject}</Text>
+        <Text style={styles.documentTypeLabel}>Status</Text>
+          <Text style={styles.itemValue}>{item.status}</Text>
+        <Text>{'\n'}</Text>
+        <View style={{borderBottomWidth:2,borderBottomColor:Colors.new_color_palette.divider}}></View>
+    </View>
+  )
+
   return (
     <Root>
     <KeyboardAvoidingView style={styles.container}>
@@ -32,8 +63,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
     <View style={{flex:1}}>
       <View style={{position:'absolute', left: 0, right: 0, bottom: 0}}>
       <ScrollView style = {styles.documentsContainer}>
-
-
+        
+          <FlatList
+              data={DATA}
+              renderItem={renderItem}
+          
+          />
       </ScrollView>
       </View>
     </View>
@@ -74,19 +109,45 @@ const styles = StyleSheet.create({
   },
   documentsContainer:{
     top:110,
-    width:(Layout.window.width / 100) * 99,
+    width:(Layout.window.width / 100) * 102,
     height:(Layout.window.height / 100) * 86,
-    right:195,        
-    borderTopLeftRadius:35,
-    borderTopRightRadius:35,
-    backgroundColor:Colors.new_color_palette.main_background,
-    
-    
+    right:200,        
+    borderTopLeftRadius:45,
+    borderTopRightRadius:45,
+    backgroundColor:Colors.new_color_palette.main_background,        
   },
   searchTextInput:{
     top:100,
     borderRadius:40,
-    width:(Layout.window.width / 100) * 80,
+    width:(Layout.window.width / 100) * 90,
     position:'absolute'
-  }
+  },
+  card:{    
+    top:20,    
+  
+    width:(Layout.window.width / 100) * 120,
+    height:(Layout.window.height / 100) * 30,
+    minHeight:(Layout.window.height / 100) * 30,
+    right:40,
+    // backgroundColor:Colors.color_palette.base
+  },
+  documentNumber:{
+      top:5,
+      color:Colors.new_color_palette.text,
+      fontSize:23,
+      fontWeight:'bold',
+      left:60
+  },
+  documentTypeLabel:{
+    top:5,
+    color:Colors.new_color_palette.text,
+    fontSize:18,
+    fontWeight:'bold',
+    left:60
+},
+itemValue:{
+  color:Colors.new_color_palette.text,
+  fontSize:14,  
+  left:80
+}
 });

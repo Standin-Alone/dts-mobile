@@ -28,7 +28,9 @@ export default {
     second_background:'#ffffff',
     main_background:'#f2f5ff',
     blue_background:'#121924',
-    fade_background:'#f2f2f2'
+    fade_background:'#f2f2f2',
+    divider:'#b4c0d3',
+    text:'#545a64'
     
   },
   fade:'#ddd',
