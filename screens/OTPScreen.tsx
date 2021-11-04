@@ -43,8 +43,10 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
             if(response.data['Message'] == 'true'){
               console.warn(response.data);
               AsyncStorage.setItem('user_id',response.data['user_id']);
-              AsyncStorage.setItem('full_name',response.data['full_name']);
-              AsyncStorage.setItem('office',response.data['office']);
+              AsyncStorage.setItem('full_name',response.data['full_name']);              
+              AsyncStorage.setItem('office_code',response.data['office_code']);
+              AsyncStorage.setItem('division',response.data['division']);
+              AsyncStorage.setItem('service',response.data['service']);
               AsyncStorage.setItem('email',response.data['email']);
               AsyncStorage.setItem('mobile',response.data['mobile']);
 

@@ -64,15 +64,13 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
                 confirmText:'Okay',
                 okButtonStyle:styles.confirmButton,
                 okButtonTextStyle: styles.confirmButtonText,
-                callback: () => {
-                  
-                  navigation.push('ReceiveForm',{document_info:response.data['doc_info']})
+                callback: () => {                  
                   Popup.hide()
+                  navigation.replace('ReceiveForm',{document_info:response.data['doc_info']})
+                  
                 },              
               })
-   
-              
-                    
+  
             }else{
               
             } 

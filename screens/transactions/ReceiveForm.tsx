@@ -12,7 +12,10 @@ import Button from 'apsl-react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome } from '@expo/vector-icons';
 import { Root, Popup } from 'react-native-popup-confirm-toast';
-
+import NetInfo from "@react-native-community/netinfo";
+import axios from 'axios';
+import * as ipConfig from '../../ipconfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps<'ReceiveForm'>){
 
@@ -52,8 +55,9 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   }, []);
 
 
+  // handle receive button
   const handleReceive = async () => {
-    
+    // show confirmation before receive the document
     Popup.show({
       type: 'confirm',              
       title: 'Confirmation',
@@ -62,7 +66,64 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
       confirmText:'Cancel',      
       okButtonStyle:styles.confirmButton,
       okButtonTextStyle: styles.confirmButtonText,
-      callback: () => Popup.hide(),       
+      callback: () => {
+
+        NetInfo.fetch().then(async (response)=>{          
+          let data ={
+            document_number: params.document_info[0].document_number,
+            office_code: await AsyncStorage.getItem('office_code'),
+            
+          }
+          if(response.isConnected){
+            // perform axios here
+            axios.post(ipConfig.ipAddress+'MobileApp/Mobile/receive_document',data).then((response)=>{
+
+              if(response.data['Message'] == 'true'){
+                console.warn(response.data)
+              }else{
+                Popup.show({
+                  type: 'danger',              
+                  title: 'Error!',
+                  textBody: 'Sorry you are not valid to receive this document.',                
+                  confirmText:'I understand',
+                  okButtonStyle:styles.confirmButton,
+                  okButtonTextStyle: styles.confirmButtonText,
+                  modalContainerStyle:styles.confirmModal,      
+                  callback: () => {                  
+                    
+                    Popup.hide()
+                  },              
+                })
+              }
+            }).catch((err)=>{
+              console.warn(err.response.data)
+            })
+
+          }else{
+
+            Popup.show({
+              type: 'danger',              
+              title: 'Error!',
+              textBody: 'No Internet Connection. Please try again. ',                
+              confirmText:'I understand',
+              okButtonStyle:styles.confirmButton,
+              okButtonTextStyle: styles.confirmButtonText,
+              modalContainerStyle:styles.confirmModal,      
+              callback: () => {                  
+                
+                Popup.hide()
+              },              
+            })
+
+
+          }
+        });
+
+
+
+
+      },       
+
       modalContainerStyle:styles.confirmModal       
       
     })
@@ -83,7 +144,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
     
     <View style={styles.container}>       
       
-      <Root > 
+      <Root >   
       <View style={styles.innerContainer}>
       <View>
         <Text style={styles.docuInfo}> <Icon name="file" size={20} color={Colors.color_palette.orange}/>   Document Information</Text>
@@ -145,9 +206,8 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
         </Button>
         </View>        
       </View>
-      </Root>  
-    </View>
-    
+      </Root>    
+    </View>    
   );
   
   }
