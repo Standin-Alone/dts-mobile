@@ -57,7 +57,7 @@ function RootNavigator() {
 
 
   return (
-    <Stack.Navigator initialRouteName="SplashScreenContainer">      
+    <Stack.Navigator initialRouteName="Root">      
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>

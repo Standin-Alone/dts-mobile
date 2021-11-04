@@ -11,6 +11,7 @@ import { Fumi  } from 'react-native-textinput-effects';
 import Button from 'apsl-react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesome } from '@expo/vector-icons';
+import { Root, Popup } from 'react-native-popup-confirm-toast';
 
 
 export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps<'ReceiveForm'>){
@@ -51,15 +52,38 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   }, []);
 
 
-  const handleReceive = async ({ type, data }) => {
-
+  const handleReceive = async () => {
     
+    Popup.show({
+      type: 'confirm',              
+      title: 'Confirmation',
+      textBody: 'Are you sure you want to receive this document?',
+      buttonText: 'Confirm',
+      confirmText:'Cancel',      
+      okButtonStyle:styles.confirmButton,
+      okButtonTextStyle: styles.confirmButtonText,
+      callback: () => Popup.hide(),       
+      modalContainerStyle:styles.confirmModal       
+      
+    })
 
-}
+  }
+
+
+  const component = (props) => {
+    //hook or class 
+    return null;
+    
+    props.spSheet.hide();
+};
+
 
   // design start here
   return (
-    <View style={styles.container}>        
+    
+    <View style={styles.container}>       
+      
+      <Root > 
       <View style={styles.innerContainer}>
       <View>
         <Text style={styles.docuInfo}> <Icon name="file" size={20} color={Colors.color_palette.orange}/>   Document Information</Text>
@@ -105,6 +129,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
         </View>
        )}
       </View>
+      
       <View style={{flex:1}}>
         <View style={{position:'absolute', left: 0, right: 0, bottom: 0}}>
         <Button  
@@ -114,14 +139,15 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           activeOpacity={100}
           isLoading={isLoading}
           disabledStyle={{opacity:1}}
-          onPress ={()=>{setLoading(false)}}
+          onPress ={handleReceive}
           >
             Receive
         </Button>
         </View>        
       </View>
-      
+      </Root>  
     </View>
+    
   );
   
   }
@@ -189,6 +215,18 @@ const styles = StyleSheet.create({
   bottomTitle:{
     color:Colors.new_color_palette.orange,
     fontSize:20,
+  },
+  confirmButton:{
+    backgroundColor:'white',
+    color:Colors.new_color_palette.orange,
+    borderColor:Colors.new_color_palette.orange,
+    borderWidth:1
+  },
+  confirmButtonText:{  
+    color:Colors.new_color_palette.orange,    
+  },
+  confirmModal:{
+    right:30
   }
 
 
