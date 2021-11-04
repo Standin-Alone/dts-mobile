@@ -66,7 +66,7 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
   // design start here
   return (
     <View style={styles.container}>
-        <Image source={Images.splash_screen_logo} style={styles.logo} />        
+        <Image source={Images.splash_screen_logo} style={styles.logo} resizeMode={'contain'} />        
           <View style={styles.login_form}>
             <Formik
               initialValues = {{username:'',password:''}}
@@ -115,8 +115,8 @@ export default  function  LoginScreen({ navigation }: RootStackScreenProps<'Logi
                     }
                     <Button 
                       textStyle={styles.textButton} 
-                      style={{borderColor:Colors.new_color_palette.orange}} 
-                      activityIndicatorColor={Colors.new_color_palette.orange} 
+                      style={{borderColor:Colors.new_color_palette.orange,backgroundColor:Colors.new_color_palette.orange}} 
+                      activityIndicatorColor={'white'} 
                       isLoading={isLoading}
                       disabledStyle={{opacity:1}}
                       onPress ={handleSubmit}
@@ -145,20 +145,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:Colors.new_color_palette.main_background,
+    backgroundColor:Colors.new_color_palette.second_background,
     minHeight: Math.round(Layout.window.height)
   },
   title: {
-    marginVertical: (Layout.window.height / 100) * 10,
+    marginVertical: (Layout.window.height / 100) * 20,
     fontSize: 24,
     fontWeight: 'bold',
   },
   login_form:{      
-    marginVertical: (Layout.window.height / 100) * 10
-  },
+    marginVertical: (Layout.window.height / 100) * 1  },
   logo:{
-      width:150,
-      height:150,      
+      width:300,
+      height:300,            
   },
   link: {
     marginTop: 15,
@@ -177,11 +176,12 @@ const styles = StyleSheet.create({
        
   },
   formBody:{
-    backgroundColor:Colors.new_color_palette.main_background
+    backgroundColor:Colors.new_color_palette.second_background
   },
   textButton:{
     fontSize: 18,
-    color:Colors.new_color_palette.orange,
+    color:'white',
+    
     height:50,
     paddingTop:10,    
     width: (Layout.window.width / 100 ) * 90,

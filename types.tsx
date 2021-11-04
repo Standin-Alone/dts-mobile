@@ -22,6 +22,8 @@ export type RootStackParamList = {
   OTPScreen: undefined;
   QRCodeScreen: undefined;
   ReceiveForm: undefined;
+  HistoryScreen: undefined;
+
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

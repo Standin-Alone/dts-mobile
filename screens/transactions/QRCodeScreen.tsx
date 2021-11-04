@@ -85,14 +85,17 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
       
         {scanned == false ? (        
         <Camera
-        onBarCodeScanned={scanned ? handleQRCodeScanned : handleQRCodeScanned}
+        onBarCodeScanned={scanned ? undefined : handleQRCodeScanned}
         barCodeScannerSettings={{
           barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
         }}
         ratio='16:9'
         style={[StyleSheet.absoluteFillObject,styles.container]}
         >        
+
+        
           <BarcodeMask edgeColor={Colors.color_palette.orange} showAnimatedLine={false}/>                
+        
         </Camera>
 
         ) : (
@@ -109,15 +112,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: 20,
-    backgroundColor:Colors.color_palette.base
+    backgroundColor:Colors.new_color_palette.blue_background
     
   },
   formBody:{
     flex: 1,
-    backgroundColor:Colors.color_palette.base
+    backgroundColor:Colors.new_color_palette.blue_background
   },
   qrForm:{
     flex: 1,
+    backgroundColor:Colors.new_color_palette.blue_background,
   },
   
 

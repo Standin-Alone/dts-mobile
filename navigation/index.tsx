@@ -32,6 +32,7 @@ import OTPScreen from '../screens/OTPScreen';
 // tranaction screens
 import QRCodeScreen from '../screens/transactions/QRCodeScreen';
 import ReceiveForm from '../screens/transactions/ReceiveForm';
+import HistoryScreen from '../screens/transactions/HistoryScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -50,14 +51,19 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 function RootNavigator() {
+  
+
+
   return (
-    <Stack.Navigator initialRouteName="SplashScreen">      
+    <Stack.Navigator initialRouteName="SplashScreenContainer">      
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
-      <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code'}}/>
+      <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code',headerTransparent:true,headerTitleStyle:styles.bottomTitle,headerTintColor:Colors.new_color_palette.orange}}/>
       <Stack.Screen name="ReceiveForm" component={ReceiveForm}/>
+      <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -96,37 +102,33 @@ function BottomTabNavigator() {
         
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
 
-          
+          tabBarInactiveBackgroundColor:Colors.new_color_palette.blue_background,
+          tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'My Documents',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={Colors.new_color_palette.blue_background}/>,
-          tabBarActiveTintColor: Colors.color_palette.orange,
-          tabBarInactiveTintColor:Colors.new_color_palette.blue_background,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={Colors.new_color_palette.main_background}/>,          
+          tabBarActiveTintColor: Colors.new_color_palette.fade_background,
+          tabBarInactiveTintColor:Colors.new_color_palette.divider,
           headerTransparent:true,
-          headerTitleStyle:styles.homeTitle,
-          headerRight: () => (
-            
+          headerTitleStyle:styles.bottomTitle,
+          headerRight: () => (            
             <Pressable
-              onPress={ async () => {
-                    // AsyncStorage.clear();
-                    // navigation.replace('SplashScreenContainer');
-
-
+              onPress={ async () => {                    
                     Popup.show({
                       type: 'confirm',
                       title: 'Warning',
                       textBody: 'Do you want to sign out?',
                       
                       buttonText: 'Sign Out',
-                      confirmText:'Cancel',
-                      callback: () => Popup.hide(),
+                      confirmText:'Cancel',                                 
+                      callback: () => {
+                        AsyncStorage.clear();
+                        navigation.replace('SplashScreenContainer');
+                        Popup.hide()
+                      },
                       okButtonStyle:styles.confirmButton,
                       okButtonTextStyle: styles.confirmButtonText
                     
                     })
-
-
-
-                    
               }}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
@@ -149,10 +151,46 @@ function BottomTabNavigator() {
         name="TabTwo"
         component={ProfileScreen}
         options={{
+          tabBarInactiveBackgroundColor:Colors.new_color_palette.blue_background,
+          tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'Profile',
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={Colors.new_color_palette.blue_background}  />,
-          tabBarActiveTintColor: Colors.color_palette.orange,
-          tabBarInactiveTintColor:Colors.new_color_palette.blue_background
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={Colors.new_color_palette.fade_background}  />,
+          tabBarActiveTintColor: Colors.new_color_palette.fade_background,
+          tabBarInactiveTintColor:Colors.new_color_palette.divider,
+          headerTransparent:true,
+          headerTitleStyle:styles.bottomTitle,
+          headerRight: () => (
+            
+            <Pressable
+              onPress={ async () => {                    
+                    Popup.show({
+                      type: 'confirm',
+                      title: 'Warning',
+                      textBody: 'Do you want to sign out?',
+                      
+                      buttonText: 'Sign Out',
+                      confirmText:'Cancel',                                 
+                      callback: () => {
+                        AsyncStorage.clear();
+                        navigation.replace('SplashScreenContainer');
+                        Popup.hide()
+                      },
+                      okButtonStyle:styles.confirmButton,
+                      okButtonTextStyle: styles.confirmButtonText
+                    
+                    })
+              }}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="sign-out"
+                size={25}
+                color={Colors.color_palette.orange}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
           
         }}
       />
@@ -179,11 +217,9 @@ confirmButton:{
   borderWidth:1
 },
 confirmButtonText:{  
-  color:Colors.new_color_palette.orange,
-  
-  
+  color:Colors.new_color_palette.orange,    
 },
-homeTitle:{
+bottomTitle:{
   color:Colors.new_color_palette.orange,
   fontSize:20,
 }

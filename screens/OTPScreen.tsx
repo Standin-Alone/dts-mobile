@@ -115,7 +115,7 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
   // design start here
   return (
     <View style={styles.container}>
-        <Image source={Images.splash_screen_logo} style={styles.logo} />        
+        <Image source={Images.splash_screen_logo} style={styles.logo}  resizeMode={'contain'}/>        
           <View style={styles.otp_form}>
 
             <Formik
@@ -156,8 +156,8 @@ export default  function  OTPScreen({ navigation,route}: RootStackScreenProps<'O
 
                     <Button 
                       textStyle={styles.textButton} 
-                      style={{borderColor:Colors.new_color_palette.orange}} 
-                      activityIndicatorColor={Colors.new_color_palette.orange} 
+                      style={{borderColor:Colors.new_color_palette.orange,backgroundColor:Colors.new_color_palette.orange}} 
+                      activityIndicatorColor={'white'} 
                       isLoading={isLoading}
                       onPress ={handleSubmit}
                     > 
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: Colors.new_color_palette.main_background,
+    backgroundColor:Colors.new_color_palette.second_background,
     minHeight: Math.round(Layout.window.height)
   },
   title: {
@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
     marginVertical: (Layout.window.height / 100) * 5
   },
   logo:{
-      width:150,
-      height:150
+    width:300,
+    height:300,       
   },
   otp: { textAlign: "center", fontSize: 25,color:Colors.dark.background },
   otp_desc: { textAlign: "center", fontSize: 18,marginBottom:20,color:Colors.dark.background},
@@ -216,11 +216,11 @@ const styles = StyleSheet.create({
        
   },
   formBody:{
-    backgroundColor:Colors.new_color_palette.main_background
+    backgroundColor:Colors.new_color_palette.second_background
   },
   textButton:{
     fontSize: 18,
-    color:Colors.new_color_palette.orange,
+    color:'white',
     height:50,
     paddingTop:10,    
     width: (Layout.window.width / 100 ) * 120,

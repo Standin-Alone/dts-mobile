@@ -28,31 +28,34 @@ useEffect(async () => {
 
   return (
     <View style={styles.container}>
-      <View>
-            <Text style={styles.detailTitle}>Profile Info</Text>
-      </View>
 
-      <View style={styles.profileCard}>
-            <Image source={Images.user_icon} style={styles.user_icon}/>
-            <Text style={styles.user_name}>{name}</Text>
-            {/* <Text style={styles.role}>Administrative Officer II</Text> */}
-      </View>
+      <View style={styles.innerContainer}>
+        <View>
+              <Text style={styles.detailTitle}>Profile Info</Text>
+        </View>
 
-      <View>
-            <Text style={styles.detailTitle}>Account Info</Text>
-      </View>
+        <View style={styles.profileCard}>
+              <Image source={Images.user_icon} style={styles.user_icon}/>
+              <Text style={styles.user_name}>{name}</Text>
+              {/* <Text style={styles.role}>Administrative Officer II</Text> */}
+        </View>
 
-      <View style={styles.accountCard}>
-          <View style={styles.emailCard}>
-            <Text style={styles.emailTitle}>EMAIL</Text>
-            <Text style={styles.email}>{email}</Text>
-            {/* <Icon name="arrow-right" size={30}  style={styles.arrow} color={Colors.color_palette.orange} onPress={()=>{}}/> */}
-          </View>
-          <View style={styles.emailCard}>
-            <Text style={styles.emailTitle}>Contact Number</Text>
-            <Text style={styles.email}>{mobile}</Text>
-            {/* <Icon name="arrow-right" size={30}  style={styles.arrow} color={Colors.color_palette.orange} onPress={()=>{}}/> */}
-          </View>
+        <View>
+              <Text style={styles.detailTitle}>Account Info</Text>
+        </View>
+
+        <View style={styles.accountCard}>
+            <View style={styles.emailCard}>
+              <Text style={styles.emailTitle}>EMAIL</Text>
+              <Text style={styles.email}>{email}</Text>
+              {/* <Icon name="arrow-right" size={30}  style={styles.arrow} color={Colors.color_palette.orange} onPress={()=>{}}/> */}
+            </View>
+            <View style={styles.emailCard}>
+              <Text style={styles.emailTitle}>Contact Number</Text>
+              <Text style={styles.email}>{mobile}</Text>
+              {/* <Icon name="arrow-right" size={30}  style={styles.arrow} color={Colors.color_palette.orange} onPress={()=>{}}/> */}
+            </View>
+        </View>
       </View>
 
     </View>
@@ -62,9 +65,9 @@ useEffect(async () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding:20,
-    justifyContent: 'flex-start',
-    backgroundColor:Colors.new_color_palette.main_background
+        
+    backgroundColor:Colors.new_color_palette.blue_background,
+    
   },
   title: {
     fontSize: 20,
@@ -76,13 +79,13 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   detailTitle:{
-    paddingBottom:20,
+    paddingBottom:50,
     fontSize:18,
     fontWeight:'900',
     color:Colors.color_palette.orange,
   },
   profileCard:{
-    backgroundColor:'white',
+    backgroundColor:Colors.new_color_palette.main_background,        
     width:(Layout.window.width / 100) * 90,
     height:(Layout.window.height / 100) * 10,
     borderRadius:15,
@@ -112,12 +115,16 @@ const styles = StyleSheet.create({
     color:Colors.fade,
 
   },
+  innerContainer:{
+    top:100,
+    left:20,
+  },
 
 
 
   // account card css
   accountCard:{    
-    backgroundColor:'white',
+    backgroundColor:Colors.new_color_palette.main_background,        
     width:(Layout.window.width / 100) * 90,
     height:(Layout.window.height / 100) * 20,
     borderRadius:15,
@@ -127,14 +134,14 @@ const styles = StyleSheet.create({
     left:(Layout.window.height / 100) * 35,
   },
   emailCard:{
-    // backgroundColor:Colors.color_palette.base,
+    backgroundColor:Colors.new_color_palette.main_background,        
     width:(Layout.window.width / 100) * 82,
     height:(Layout.window.height / 100) * 10,
     left:20
   },
   emailTitle:{
     justifyContent:'flex-start',
-    color:Colors.fade,
+    color:Colors.new_color_palette.text,
     fontSize:15,
     padding:10
   },

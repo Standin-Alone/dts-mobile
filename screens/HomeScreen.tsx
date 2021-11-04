@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Layout from '../constants/Layout';
 import Colors from '../constants/Colors';
 import { Root, Popup } from 'react-native-popup-confirm-toast';
+import { createFilter } from "react-native-search-filter";
 import { Fumi  } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
@@ -27,8 +28,36 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
       subject: "Sample Subject",
       status: "Pending",
     },
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending",
+    },
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending",
+    },
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending",
+    },
+
+    {
+      document_number: "DA-CO-IAS-MO20211025-00001",
+      type: "Memo",
+      subject: "Sample Subject",
+      status: "Pending",
+    },
  
   ];
+
+
+  
   
   const renderItem = ({item})=>(
     <View style={styles.card}>  
@@ -43,6 +72,10 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
         <View style={{borderBottomWidth:2,borderBottomColor:Colors.new_color_palette.divider}}></View>
     </View>
   )
+
+  // const filteredDocuments = scannedVouchers.filter(
+  //   createFilter(search, KEYS_TO_FILTERS)
+  // );
 
   return (
     <Root>
@@ -62,14 +95,16 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
 
     <View style={{flex:1}}>
       <View style={{position:'absolute', left: 0, right: 0, bottom: 0}}>
-      <ScrollView style = {styles.documentsContainer}>
+      <View style = {styles.documentsContainer}>
         
           <FlatList
+              scrollEnabled
               data={DATA}
               renderItem={renderItem}
-          
+              style={{top:20,height:100}}
+              contentContainerStyle={styles.flatListContainer}
           />
-      </ScrollView>
+      </View>
       </View>
     </View>
 
@@ -108,9 +143,9 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   documentsContainer:{
-    top:110,
+    bottom:0,
     width:(Layout.window.width / 100) * 102,
-    height:(Layout.window.height / 100) * 86,
+    height:(Layout.window.height / 100) * 75,
     right:200,        
     borderTopLeftRadius:45,
     borderTopRightRadius:45,
@@ -123,8 +158,7 @@ const styles = StyleSheet.create({
     position:'absolute'
   },
   card:{    
-    top:20,    
-  
+    top:20,      
     width:(Layout.window.width / 100) * 120,
     height:(Layout.window.height / 100) * 30,
     minHeight:(Layout.window.height / 100) * 30,
@@ -149,5 +183,10 @@ itemValue:{
   color:Colors.new_color_palette.text,
   fontSize:14,  
   left:80
+},
+flatListContainer:{    
+  flexGrow:0,
+  paddingBottom:90,
+  
 }
 });

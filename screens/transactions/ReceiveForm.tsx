@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, TouchableOpacity,Image,TextInput,Text,View  } from 'react-native';
+import { StyleSheet,Text,View,Pressable  } from 'react-native';
 
 import { RootStackScreenProps } from '../../types';
 import Images from '../../constants/Images';
@@ -10,6 +10,7 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi  } from 'react-native-textinput-effects';
 import Button from 'apsl-react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps<'ReceiveForm'>){
@@ -20,9 +21,33 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   const [scanned, setScanned]             = useState(false);
 
   const params = route.params;
+  
+  const receiveFormOptions = {
+    headerTitle:'Receive Document',
+    headerTransparent:true,
+    headerTitleStyle:styles.bottomTitle,
+    headerTintColor:Colors.new_color_palette.orange,
+    headerRight: () => (
+            
+      <Pressable
+        onPress={ async () => {                    
+            navigation.navigate('HistoryScreen');
+        }}
+        style={({ pressed }) => ({
+          opacity: pressed ? 0.5 : 1,
+        })}>
+        <FontAwesome
+          name="history"
+          size={25}
+          color={Colors.color_palette.orange}
+          style={{ marginRight: 15 }}
+        />
+      </Pressable>
+    ),
 
+  };
   useEffect(() => {
-    navigation.setOptions({title: 'Receive Document'});
+    navigation.setOptions(receiveFormOptions);
   }, []);
 
 
@@ -35,6 +60,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   // design start here
   return (
     <View style={styles.container}>        
+      <View style={styles.innerContainer}>
       <View>
         <Text style={styles.docuInfo}> <Icon name="file" size={20} color={Colors.color_palette.orange}/>   Document Information</Text>
       </View>
@@ -44,7 +70,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
         <View style={styles.infoCard}>
          
           <View>
-            <Text style={styles.detailTitle}>Tracking Number:</Text>
+            <Text style={styles.detailTitle}>Document Number:</Text>
           </View>
           <View  style={styles.titleView}>
             {/* <Text style={styles.detailValue}>DA-CO-IAS-MO20211025-00001</Text> */}
@@ -78,7 +104,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
 
         </View>
        )}
-
+      </View>
       <View style={{flex:1}}>
         <View style={{position:'absolute', left: 0, right: 0, bottom: 0}}>
         <Button  
@@ -94,6 +120,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
         </Button>
         </View>        
       </View>
+      
     </View>
   );
   
@@ -102,16 +129,15 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
-    justifyContent: 'flex-start',
-    padding: 20,
-    backgroundColor:Colors.new_color_palette.main_background  
+        
+    padding: 10,
+    backgroundColor:Colors.new_color_palette.blue_background  
   },
   detailTitle:{
     
     fontSize:18,
     fontWeight:'200',
-    color:Colors.fade,      
+    color:Colors.new_color_palette.text,      
     padding:20,
     top:5,
   },
@@ -151,14 +177,19 @@ const styles = StyleSheet.create({
   },
   infoCard:{
     top:20,
-    backgroundColor:'white',
-    width:(Layout.window.width / 100) * 90,
+    backgroundColor:Colors.new_color_palette.main_background,  
+    width:(Layout.window.width / 100) * 95,
     height:(Layout.window.height / 100) * 50,
     borderRadius:15,
     minHeight: (Layout.window.height / 100) * 72,    
+  },
+  innerContainer:{
+    top:100,    
+  },
+  bottomTitle:{
+    color:Colors.new_color_palette.orange,
+    fontSize:20,
   }
-
-
 
 
 });

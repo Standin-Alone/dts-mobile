@@ -25,8 +25,8 @@ export default function SplashScreenContainer({ navigation }: RootStackScreenPro
             }
             
           }else{
-            // alert('No Internet Connection.')
-            navigation.replace('LoginScreen');
+            alert('No Internet Connection.Pleae check your internet connection.')
+            
           }
       });
     },5000)
@@ -34,8 +34,8 @@ export default function SplashScreenContainer({ navigation }: RootStackScreenPro
   
   return (
     <View style={styles.container}>
-        <Image source={Images.splash_screen_logo} style={styles.logo} />
-        <Text style={styles.title}>Document Tracking Mobile Application</Text>
+        <Image source={Images.splash_screen_logo} style={styles.logo}  resizeMode={'contain'}/>
+        
     </View>
   );
 
@@ -47,19 +47,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    backgroundColor:Colors.new_color_palette.main_background
+    backgroundColor:Colors.new_color_palette.second_background
   },
   title: {
-    marginVertical: (Layout.window.height / 100) * 10,
+    marginVertical: (Layout.window.height / 100) * -20,
     fontSize: 25,    
     color:'black',
     fontWeight: 'bold',
     textAlign:'center'
   },
   logo:{
-      width:200,
-      height:200
-  },
+      width:(Layout.window.width / 100) *  80,
+      height:(Layout.window.height / 100) * 80,
+      bottom:0,
+      top:0,
+        },
   link: {
     marginTop: 15,
     paddingVertical: 15,
