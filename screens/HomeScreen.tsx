@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useEffect,useState} from 'react';
 import { StyleSheet,ScrollView,KeyboardAvoidingView,FlatList,Text,View } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -12,51 +12,58 @@ import { Root, Popup } from 'react-native-popup-confirm-toast';
 import { createFilter } from "react-native-search-filter";
 import { Fumi  } from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
-
+import NetInfo from "@react-native-community/netinfo";
+import axios from 'axios';
+import * as ipConfig from '../ipconfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
 
-  const DATA = [
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending"
-    },
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending",
-    },
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending",
-    },
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending",
-    },
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending",
-    },
+  const [refreshing, setRefreshing]           = useState(false);
+  const [data,setData]                = useState([]);
 
-    {
-      document_number: "DA-CO-IAS-MO20211025-00001",
-      type: "Memo",
-      subject: "Sample Subject",
-      status: "Pending",
-    },
+  const refreshData = ()=>{
+    NetInfo.fetch().then(async (response)=>{
+
+      let payload = {        
+        office_code : await AsyncStorage.getItem('office_code'),              
+      } 
+      if(response.isConnected){
+        axios.post(ipConfig.ipAddress+'MobileApp/Mobile/my_documents',payload).then((response)=>{
+
+          if(response.data['Message'] == 'true'){
+            console.warn( response.data['doc_info'])
+            
+            response.data['doc_info'].map((item)=>{
+              setData([{
+                document_number: item.document_number,
+                type:  item.type,
+                subject: item.subject,
+                status: item.status
+              }]);
+
+            })
+            setRefreshing(false);
+          }
+        }).catch((error)=>{
+          
+          console.warn(error.response.data)
+          console.warn(error.response)
+          setRefreshing(false);
+        });
+      }
+    });
+    
+    setRefreshing(false);
+  }
+  useEffect(() => {
+    setRefreshing(true);
+    refreshData();
+  }, []);
+
+  
+
+
  
-  ];
-
-
   
   
   const renderItem = ({item})=>(
@@ -76,6 +83,16 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
   // const filteredDocuments = scannedVouchers.filter(
   //   createFilter(search, KEYS_TO_FILTERS)
   // );
+
+  
+  const emptyComponent = () =>(
+    <View      
+      style= {styles.empty}      
+    >
+      <Text style= {styles.emptyText}>You have no documents received.</Text>
+    </View>
+  )
+
 
   return (
     <Root>
@@ -99,10 +116,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
         
           <FlatList
               scrollEnabled
-              data={DATA}
+              data={data}
               renderItem={renderItem}
               style={{top:20,height:100}}
-              contentContainerStyle={styles.flatListContainer}
+              ListEmptyComponent={() => emptyComponent()}
+              contentContainerStyle={styles.flatListContainer}              
+              onRefresh={refreshData}
+              refreshing={refreshing}                                  
           />
       </View>
       </View>
@@ -186,7 +206,15 @@ itemValue:{
 },
 flatListContainer:{    
   flexGrow:0,
-  paddingBottom:90,
-  
+  paddingBottom:90,  
+},
+empty:{
+  top:5,
+  left:20
+},
+emptyText:{
+  color:Colors.new_color_palette.text,
+  fontSize:23,
+  fontWeight:'bold',
 }
 });

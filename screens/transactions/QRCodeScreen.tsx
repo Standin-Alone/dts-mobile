@@ -14,6 +14,7 @@ import axios from 'axios';
 import * as ipConfig from '../../ipconfig';
 import { Root, Popup,Toast} from 'react-native-popup-confirm-toast';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTPScreen'>){
 
   const navigation_state = useNavigationState(
@@ -47,7 +48,8 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
   const handleQRCodeScanned = async ({ type, data }) => {
 
       let payload = {
-        document_number : data
+        document_number : data,
+        office_code : await AsyncStorage.getItem('office_code'),              
       } 
 
       
@@ -57,11 +59,12 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
           axios.post(ipConfig.ipAddress+'MobileApp/Mobile/get_scanned_document',payload).then((response)=>{
                         
             if(response.data['Message'] == 'true'){
+
               Popup.show({
                 type: 'success',              
                 title: 'Success!',
                 textBody: 'Sucessfully scanned the QR code.',                
-                confirmText:'Okay',
+                buttonText:'Ok',
                 okButtonStyle:styles.confirmButton,
                 okButtonTextStyle: styles.confirmButtonText,
                 callback: () => {                  
@@ -71,11 +74,34 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
                 },              
               })
   
+            }else if(response.data['Message'] == 'Not Authorize'){
+
+              Popup.show({
+                type: 'danger',              
+                title: 'Error!',
+                textBody: "You don't have authorize to receive this document or you already received this document.",                
+                buttonText:'Ok',
+                okButtonStyle:styles.confirmButton,
+                okButtonTextStyle: styles.confirmButtonText,
+                callback: () => {                  
+                  Popup.hide()                                    
+                },              
+              })
             }else{
-              
+              Popup.show({
+                type: 'danger',              
+                title: 'Error!',
+                textBody: "Something went wrong.",                
+                buttonText:'Ok',
+                okButtonStyle:styles.confirmButton,
+                okButtonTextStyle: styles.confirmButtonText,
+                callback: () => {                  
+                  Popup.hide()                                    
+                },              
+              })
             } 
           }).catch((err)=>{
-            console.warn(err.response);
+            console.warn(err.response.data);
             
           });
       }else{

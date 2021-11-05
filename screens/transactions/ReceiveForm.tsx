@@ -25,7 +25,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   const [scanned, setScanned]             = useState(false);
 
   const params = route.params;
-  
+  console.warn(params);
   const receiveFormOptions = {
     headerTitle:'Receive Document',
     headerTransparent:true,
@@ -72,31 +72,51 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           let data ={
             document_number: params.document_info[0].document_number,
             office_code: await AsyncStorage.getItem('office_code'),
-            
+            user_id : await AsyncStorage.getItem('user_id'),
+            full_name : await AsyncStorage.getItem('full_name'),
+            info_division : await AsyncStorage.getItem('division'),
+            info_service : await AsyncStorage.getItem('service')            
           }
+          
           if(response.isConnected){
             // perform axios here
             axios.post(ipConfig.ipAddress+'MobileApp/Mobile/receive_document',data).then((response)=>{
 
               if(response.data['Message'] == 'true'){
-                console.warn(response.data)
+                
+
+                Popup.show({
+                  type: 'success',              
+                  title: 'Success!',
+                  textBody: 'Successfully received the document',                
+                  buttonText:'Go back to My Documents.',                
+                  okButtonStyle:styles.confirmButton,
+                  okButtonTextStyle: styles.confirmButtonText,
+                  modalContainerStyle:styles.confirmModal,                        
+                  callback: () => {                                      
+                    Popup.hide()
+                    navigation.replace('Root');
+                  },              
+                })
+                
+                
               }else{
                 Popup.show({
                   type: 'danger',              
                   title: 'Error!',
                   textBody: 'Sorry you are not valid to receive this document.',                
-                  confirmText:'I understand',
+                  buttonText:'I understand',
                   okButtonStyle:styles.confirmButton,
                   okButtonTextStyle: styles.confirmButtonText,
                   modalContainerStyle:styles.confirmModal,      
-                  callback: () => {                  
-                    
+                  callback: () => {                                      
                     Popup.hide()
                   },              
                 })
               }
             }).catch((err)=>{
               console.warn(err.response.data)
+              Popup.hide()
             })
 
           }else{
@@ -130,13 +150,6 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
 
   }
 
-
-  const component = (props) => {
-    //hook or class 
-    return null;
-    
-    props.spSheet.hide();
-};
 
 
   // design start here
