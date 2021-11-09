@@ -16,16 +16,75 @@ import NetInfo from "@react-native-community/netinfo";
 import axios from 'axios';
 import * as ipConfig from '../../ipconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import  * as MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 
-export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps<'ReceiveForm'>){
+
+export default  function  ReleaseForm({ navigation,route }: RootStackScreenProps<'ReleaseForm'>){
 
 
   const [isLoading,setLoading] = new useState(false);
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned]             = useState(false);
-
+  const [selectedRecipients,setSelectedRecipients] = useState([]);
+  const [recipients,setRecipients] = useState([]);
   const params = route.params;
   
+
+  const get_recipients = () => {
+
+    axios.get(ipConfig.ipAddress+'MobileApp/Mobile/get_offices').then((response)=>{        
+        let array_office  = [];
+        
+        response.data['offices'].map((item)=>{
+            array_office.push(item.INFO_DIVISION)
+        })
+
+        if(response.data['Message'] == 'true'){
+            setRecipients([{name:'Select Recipients Offices', id:0, children:response.data['offices'].INFO_DIVISION}]);
+        }
+
+        console.warn()
+        
+    });
+  }
+
+  const items = [
+    // this is the parent or 'item'
+    {
+      name: 'Fruits',
+      id: 0,
+      // these are the children or 'sub items'
+      children: [
+        {
+          name: 'Apple',
+          id: 10,
+        },
+        {
+          name: 'Strawberry',
+          id: 17,
+        },
+        {
+          name: 'Pineapple',
+          id: 13,
+        },
+        {
+          name: 'Banana',
+          id: 14,
+        },
+        {
+          name: 'Watermelon',
+          id: 15,
+        },
+        {
+          name: 'Kiwi fruit',
+          id: 16,
+        },
+      ],
+    },   
+  
+  ];
+
   const receiveFormOptions = {
     headerTitle:'Receive Document',
     headerTransparent:true,
@@ -52,16 +111,17 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   };
   useEffect(() => {
     navigation.setOptions(receiveFormOptions);
+    get_recipients()
   }, []);
 
 
-  // handle receive button
-  const handleReceive = async () => {
+  // handle release button
+  const handleRelease = async () => {
     // show confirmation before receive the document
     Popup.show({
       type: 'confirm',              
       title: 'Confirmation',
-      textBody: 'Are you sure you want to receive this document?',
+      textBody: 'Are you sure you want to release this document?',
       buttonText: 'Confirm',
       confirmText:'Cancel',      
       okButtonStyle:styles.confirmButton,
@@ -104,7 +164,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
                 Popup.show({
                   type: 'danger',              
                   title: 'Error!',
-                  textBody: 'Sorry you are not valid to receive this document.',                
+                  textBody: 'Sorry you are not valid to release this document.',                
                   buttonText:'I understand',
                   okButtonStyle:styles.confirmButton,
                   okButtonTextStyle: styles.confirmButtonText,
@@ -151,6 +211,10 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
   }
 
 
+  const handleSelectedChange = (value) =>{
+    setSelectedRecipients(value)
+  }
+
 
   // design start here
   return (
@@ -162,7 +226,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
       <View>
         <Text style={styles.docuInfo}> <Icon name="file" size={20} color={Colors.color_palette.orange}/>   Document Information</Text>
       </View>
-        {params.document_info && params.document_info.map((item)=>
+        {/* {params.document_info && params.document_info.map((item)=> */}
 
 
         <View style={styles.infoCard}>
@@ -172,7 +236,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           </View>
           <View  style={styles.titleView}>
             {/* <Text style={styles.detailValue}>DA-CO-IAS-MO20211025-00001</Text> */}
-            <Text style={styles.detailValue}>{item.document_number}</Text>
+            {/* <Text style={styles.detailValue}>{item.document_number}</Text> */}
           </View>
 
           <View>
@@ -180,7 +244,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           </View>
           <View style={styles.titleView}>
             {/* <Text style={styles.titleValue}>RFFA-IMC-On-Boarding-File-Structure </Text> */}
-            <Text style={styles.titleValue}>{item.subject} </Text>
+            {/* <Text style={styles.titleValue}>{item.subject} </Text> */}
           </View>
 
 
@@ -189,7 +253,7 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           </View>
           <View style={styles.titleView}>
             {/* <Text style={styles.titleValue}>ICTS SysAdd</Text> */}
-            <Text style={styles.titleValue}>{item.INFO_DIVISION}{'\n'}{item.INFO_SERVICE}</Text>
+            {/* <Text style={styles.titleValue}>{item.INFO_DIVISION}{'\n'}{item.INFO_SERVICE}</Text> */}
           </View>
 
 
@@ -200,8 +264,23 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
             <Text style={styles.titleValue}>None</Text>
           </View>      
 
+
+
+            <View>
+            <SectionedMultiSelect
+            items={recipients}
+            IconRenderer={Icon}
+            uniqueKey="id"
+            subKey="children"
+            selectText="Choose some things..."
+            showDropDowns={true}
+            readOnlyHeadings={true}
+            onSelectedItemsChange={handleSelectedChange}
+            selectedItems={selectedRecipients}
+            />
+            </View>
         </View>
-       )}
+        {/* )} */}
       </View>
       
       <View style={{flex:1}}>
@@ -213,9 +292,9 @@ export default  function  ReceiveForm({ navigation,route }: RootStackScreenProps
           activeOpacity={100}
           isLoading={isLoading}
           disabledStyle={{opacity:1}}
-          onPress ={handleReceive}
+          onPress ={handleRelease}
           >
-            Receive
+            Release Document
         </Button>
         </View>        
       </View>

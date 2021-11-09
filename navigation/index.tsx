@@ -32,15 +32,19 @@ import OTPScreen from '../screens/OTPScreen';
 // tranaction screens
 import QRCodeScreen from '../screens/transactions/QRCodeScreen';
 import ReceiveForm from '../screens/transactions/ReceiveForm';
+import ReleaseForm from '../screens/transactions/ReleaseForm';
 import HistoryScreen from '../screens/transactions/HistoryScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
       >
+      
       <RootNavigator />
+      
     </NavigationContainer>
   );
 }
@@ -57,12 +61,15 @@ function RootNavigator() {
 
 
   return (
-    <Stack.Navigator initialRouteName="Root">      
+    <Root>
+    <Stack.Navigator initialRouteName="ReleaseForm">    
+      
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
       <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerShown:false}}/>
       <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code',headerTransparent:true,headerTitleStyle:styles.bottomTitle,headerTintColor:Colors.new_color_palette.orange}}/>
       <Stack.Screen name="ReceiveForm" component={ReceiveForm}/>
+      <Stack.Screen name="ReleaseForm" component={ReleaseForm}/>
       <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
@@ -70,6 +77,7 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
+    </Root>
   );
 }
 
@@ -112,7 +120,7 @@ function BottomTabNavigator() {
           headerTitleStyle:styles.bottomTitle,
           headerRight: () => (            
             <Pressable
-              onPress={ async () => {                    
+              onPress={  () => {                    
                     Popup.show({
                       type: 'confirm',
                       title: 'Warning',
@@ -121,9 +129,10 @@ function BottomTabNavigator() {
                       buttonText: 'Sign Out',
                       confirmText:'Cancel',                                 
                       callback: () => {
+                        Popup.hide()
                         AsyncStorage.clear();
                         navigation.replace('SplashScreenContainer');
-                        Popup.hide()
+                        
                       },
                       okButtonStyle:styles.confirmButton,
                       okButtonTextStyle: styles.confirmButtonText
@@ -150,7 +159,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabTwo"
         component={ProfileScreen}
-        options={{
+        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
           tabBarInactiveBackgroundColor:Colors.new_color_palette.blue_background,
           tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'Profile',
@@ -162,8 +171,9 @@ function BottomTabNavigator() {
           headerRight: () => (
             
             <Pressable
-              onPress={ async () => {                    
-                    Popup.show({
+              onPress={  () => {                    
+                
+                Popup.show({
                       type: 'confirm',
                       title: 'Warning',
                       textBody: 'Do you want to sign out?',
@@ -171,9 +181,10 @@ function BottomTabNavigator() {
                       buttonText: 'Sign Out',
                       confirmText:'Cancel',                                 
                       callback: () => {
+                        Popup.hide()
                         AsyncStorage.clear();
                         navigation.replace('SplashScreenContainer');
-                        Popup.hide()
+                        
                       },
                       okButtonStyle:styles.confirmButton,
                       okButtonTextStyle: styles.confirmButtonText
@@ -192,7 +203,7 @@ function BottomTabNavigator() {
             </Pressable>
           ),
           
-        }}
+        })}
       />
     </BottomTab.Navigator>
   );

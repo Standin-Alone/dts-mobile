@@ -95,8 +95,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
 
 
   return (
-    <Root>
-    <KeyboardAvoidingView style={styles.container}>
+    
+    <View style={styles.container}>
     
     <Fumi
         label={'Search by tracking number'}
@@ -140,9 +140,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'TabOne'>)
           navigation.push('QRCodeScreen');
         }}
       />      
-    </KeyboardAvoidingView>
- 
-  </Root>
+    </View>
+    
+  
   );
 }
 
@@ -166,9 +166,9 @@ const styles = StyleSheet.create({
     bottom:0,
     width:(Layout.window.width / 100) * 102,
     height:(Layout.window.height / 100) * 75,
-    right:200,        
-    borderTopLeftRadius:45,
-    borderTopRightRadius:45,
+    right:(Layout.window.width / 100) * 50,        
+    borderTopLeftRadius:65,
+    borderTopRightRadius:65,
     backgroundColor:Colors.new_color_palette.main_background,        
   },
   searchTextInput:{
@@ -210,7 +210,7 @@ flatListContainer:{
 },
 empty:{
   top:5,
-  left:20
+  left:(Layout.window.height / 100) * 3
 },
 emptyText:{
   color:Colors.new_color_palette.text,

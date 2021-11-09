@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet,Text,View,Pressable } from 'react-native';
+import { StyleSheet,Text,View,Pressable,RefreshControl} from 'react-native';
 
 import { RootStackScreenProps } from '../../types';
 import Images from '../../constants/Images';
@@ -10,59 +10,76 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Fumi  } from 'react-native-textinput-effects';
 import Button from 'apsl-react-native-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import { FontAwesome } from '@expo/vector-icons';
 import Timeline from 'react-native-timeline-flatlist';
-
+import NetInfo from "@react-native-community/netinfo";
+import axios from 'axios';
+import * as ipConfig from '../../ipconfig';
 export default  function  HistoryScreen({ navigation,route }: RootStackScreenProps<'HistoryScreen'>){
 
 
   const [isLoading,setLoading] = new useState(false);
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned]             = useState(false);
+  const [refreshing, setRefreshing]             = useState(false);
+  const [history, setHistory]             = useState([]);
 
   const params = route.params;
 
   const historyOptions = {
-    headerTitle:'Transaction History',
+    headerTitle:'Document History',
     headerTransparent:true,
     headerTitleStyle:styles.bottomTitle,
     headerTintColor:Colors.new_color_palette.orange,
 
   };
 
+  const get_history = () =>{
+
+    let document_number =  params.document_info[0].document_number;
+   
+
+    
+      axios.get(ipConfig.ipAddress+'MobileApp/Mobile/get_history/'+document_number).then((response)=>{        
+        let history_data = [];
+
+
+        setHistory(response.data['history'])
+        setRefreshing(false);
+      }).catch((error)=>{
+        console.warn(error.response.data);
+      });
+ 
+
+  }
 
   useEffect(() => {
     navigation.setOptions(historyOptions);
+    get_history()
     
   }, []);
 
 
-  const handleReceive = async ({ type, data }) => {
 
-    
+  const onEndReached = ()=>{
+    //fetch next data
+  }
+  
+  const renderFooter = ()=>{
 
-}
-const timeData = [
-    {time: '09:00', title:(<View> 
-                            <Text style={styles.cardHeader}> <Icon name="user" size={20} color={Colors.color_palette.orange}/> Sender's Name {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="building" size={20} color={Colors.color_palette.orange}/> Office {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="wechat" size={20} color={Colors.color_palette.orange}/> Remarks {'\n'}</Text>                             
-                        </View>
-                        ), description: 'Event 1 Description'},
-                        {time: '09:00', title:(<View> 
-                            <Text style={styles.cardHeader}> <Icon name="user" size={20} color={Colors.color_palette.orange}/> Sender's Name {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="building" size={20} color={Colors.color_palette.orange}/> Office {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="wechat" size={20} color={Colors.color_palette.orange}/> Remarks {'\n'}</Text>                             
-                        </View>
-                        ), description: 'Event 1 Description'},  {time: '09:00', title:(<View> 
-                            <Text style={styles.cardHeader}> <Icon name="user" size={20} color={Colors.color_palette.orange}/> Sender's Name {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="building" size={20} color={Colors.color_palette.orange}/> Office {'\n'}</Text>
-                            <Text style={styles.cardHeader}> <Icon name="wechat" size={20} color={Colors.color_palette.orange}/> Remarks {'\n'}</Text>                             
-                        </View>
-                        ), description: 'sample'},
-    
-  ]
+  }
 
+  
+  const render = (rowData)=>{
+
+
+    return (<View style={{flex:1}}>
+              <Text style={styles.cardHeader}> <Icon name="user" size={10} color={Colors.color_palette.orange}/> {rowData.transacting_user_fullname} {'\n'}</Text>
+              <Text style={styles.cardHeader}> <Icon name="building" size={10} color={Colors.color_palette.orange}/> {rowData.INFO_SERVICE} {'\n'} {rowData.INFO_DIVISION} {'\n'}</Text>
+              <Text style={styles.cardHeader}> <Icon name="wechat" size={10} color={Colors.color_palette.orange}/> {rowData.remarks} {'\n'}</Text>      
+              <Text style={styles.cardHeader}> <Icon name="superpowers" size={10} color={Colors.color_palette.orange}/> {rowData.type} {'\n'}</Text>      
+            </View>);
+  }
   // design start here
   return (
     <View style={styles.container}>        
@@ -73,25 +90,37 @@ const timeData = [
 
 
         <Timeline
-          data={timeData}
+          data={history}
           dotSize={10}
           
-          
-          showTime={false}
+          options={{
+            refreshControl: (
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={get_history}
+              />
+            ),
+            renderFooter: renderFooter,
+            onEndReached: onEndReached
+       
+          }}
+
+          renderDetail = {render}
+          showTime={true}
           innerCircle={'dot'}
           style={styles.timeline}
           detailContainerStyle= {styles.cards}
+          timeContainerStyle={{minWidth:52, marginTop: -5}}
           listViewContainerStyle={{
-                paddingTop:20,               
-            }}
+            paddingTop:20
+          }}
+
+          timeStyle = {styles.time}
           
           />
 
       </View>
-      <View style={{flex:1}}>
-        <View style={{position:'absolute', left: 0, right: 0, bottom: 0}}>
-        </View>        
-      </View>
+ 
       
     </View>
   );
@@ -105,56 +134,11 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor:Colors.new_color_palette.main_background 
   },
-  detailTitle:{
-    
-    fontSize:18,
-    fontWeight:'200',
-    color:Colors.new_color_palette.text,      
-    padding:20,
-    top:5,
-  },
-  docuInfo:{
-    
-    fontSize:18,
-    fontWeight:'200',
-    color:Colors.new_color_palette.orange,      
-  },
-  detailValue:{
-    
-    fontSize:20,
-    fontWeight:'bold',
-    color:Colors.new_color_palette.orange,    
-    left:20,  
-    width:(Layout.window.width / 100) * 80
-  },
-  saveButton:{
-    borderColor:Colors.new_color_palette.orange,
-    backgroundColor:Colors.new_color_palette.orange
-  },
-  saveText:{
-    fontWeight:'bold',
-    color:Colors.light.background,
-  },  
-  titleValue:{
-    
-    fontSize:18,
-    fontWeight:'200',
-    color:Colors.new_color_palette.orange,    
-    left:20,   
-    width:(Layout.window.width / 100) * 80
+
+
   
-  },
-  titleView:{
-    width:(Layout.window.width / 100) * 30
-  },
-  infoCard:{
-    
-    backgroundColor:Colors.new_color_palette.blue_background,  
-    width:(Layout.window.width / 100) * 95,
-    height:(Layout.window.height / 100) * 80,
-    borderRadius:15,
-    minHeight: (Layout.window.height / 100) * 80,    
-  },
+
+
   innerContainer:{
     top:80,    
     width:(Layout.window.width / 100) * 95,
@@ -168,11 +152,12 @@ const styles = StyleSheet.create({
   },
   cardHeader:{
       fontWeight:'bold',
-      fontSize:16,
+      fontSize:10,
+      color:Colors.new_color_palette.text
   },
   cards:{
     backgroundColor:Colors.new_color_palette.second_background,
-    width:(Layout.window.width / 100) * 80,
+    width:(Layout.window.width / 100) * 60,
     marginBottom:30,
     borderRadius:10,
     paddingLeft:20,
@@ -180,7 +165,18 @@ const styles = StyleSheet.create({
     shadowColor: '#171717',
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.2,
-    shadowRadius: 20,}
+    shadowRadius: 20,
+},
 
+time:{
+  fontSize:10,
+  width:90,
+  
+  textAlign:'center',
+  backgroundColor:Colors.new_color_palette.yellow,
+   color:'white', 
+   padding: 7, 
+   borderRadius:13
+}
 
 });

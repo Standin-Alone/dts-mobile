@@ -54,7 +54,7 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
 
       
     
-      NetInfo.fetch().then(async (response)=>{
+      NetInfo.fetch().then( (response)=>{
         if(response.isConnected){
           axios.post(ipConfig.ipAddress+'MobileApp/Mobile/get_scanned_document',payload).then((response)=>{
                         
@@ -119,7 +119,7 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
 
   // design start here
   return (
-    <Root>
+    
       <View style={styles.container}>        
         
           {scanned == false ? (        
@@ -141,7 +141,7 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
           <Text> No Access camera</Text>
           )}
       </View>
-    </Root>
+  
   );
   
   }

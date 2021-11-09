@@ -22,6 +22,7 @@ export type RootStackParamList = {
   OTPScreen: undefined;
   QRCodeScreen: undefined;
   ReceiveForm: undefined;
+  ReleaseForm: undefined;
   HistoryScreen: undefined;
 
 };

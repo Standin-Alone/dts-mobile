@@ -8,7 +8,9 @@ import Colors from '../constants/Colors';
 import Images from '../constants/Images';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Root, Popup } from 'react-native-popup-confirm-toast';
 export default function  ProfileScreen() {
   
 const [name,setName] = useState(null);
@@ -27,6 +29,8 @@ useEffect(async () => {
 
 
   return (
+
+    
     <View style={styles.container}>
 
       <View style={styles.innerContainer}>
@@ -57,8 +61,9 @@ useEffect(async () => {
             </View>
         </View>
       </View>
-
+     
     </View>
+
   );
 }
 
