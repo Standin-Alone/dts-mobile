@@ -297,10 +297,6 @@ const styles = StyleSheet.create({
   },
   confirmButtonText:{  
     color:Colors.new_color_palette.orange,    
-  },
-  confirmModal:{
-    right:30
   }
-
 
 });

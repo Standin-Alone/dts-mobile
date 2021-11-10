@@ -60,6 +60,8 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
                         
             if(response.data['Message'] == 'true'){
 
+
+              
               Popup.show({
                 type: 'success',              
                 title: 'Success!',
@@ -69,7 +71,12 @@ export default  function  QRCodeScreen({ navigation }: RootStackScreenProps<'OTP
                 okButtonTextStyle: styles.confirmButtonText,
                 callback: () => {                  
                   Popup.hide()
-                  navigation.replace('ReceiveForm',{document_info:response.data['doc_info']})
+                  if(response.data['type'] == 'receive'){
+                    navigation.replace('ReceiveForm',{document_info:response.data['doc_info']})
+                  }else if(response.data['type'] == 'release'){
+                    navigation.replace('ReleaseForm',{document_info:response.data['doc_info']})
+                  }
+                  
                   
                 },              
               })

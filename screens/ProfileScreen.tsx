@@ -16,6 +16,7 @@ export default function  ProfileScreen() {
 const [name,setName] = useState(null);
 const [email,setEmail] = useState(null);
 const [mobile,setMobile] = useState(null);
+const [office,setOffice] = useState(null);
 
 
 useEffect(async () => {
@@ -23,6 +24,7 @@ useEffect(async () => {
   setName(await AsyncStorage.getItem('full_name'));
   setEmail(await AsyncStorage.getItem('email'));
   setMobile(await AsyncStorage.getItem('mobile'));
+  setOffice(await AsyncStorage.getItem('division'));
   
 }, [])
 
@@ -41,7 +43,7 @@ useEffect(async () => {
         <View style={styles.profileCard}>
               <Image source={Images.user_icon} style={styles.user_icon}/>
               <Text style={styles.user_name}>{name}</Text>
-              {/* <Text style={styles.role}>Administrative Officer II</Text> */}
+              <Text style={styles.role}>{office}</Text>
         </View>
 
         <View>
