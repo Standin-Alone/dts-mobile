@@ -7,6 +7,10 @@ import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
+
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 import { Root, Popup } from 'react-native-popup-confirm-toast';
@@ -62,7 +66,7 @@ function RootNavigator() {
 
   return (
     <Root>
-    <Stack.Navigator initialRouteName="SplashScreenContainer">    
+    <Stack.Navigator initialRouteName="SplashScreenContainer" screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}}    mode="modal">    
       
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
@@ -109,7 +113,7 @@ function BottomTabNavigator() {
         component={HomeScreen}
         
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-
+          
           tabBarInactiveBackgroundColor:Colors.new_color_palette.blue_background,
           tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'My Documents',
@@ -118,6 +122,7 @@ function BottomTabNavigator() {
           tabBarInactiveTintColor:Colors.new_color_palette.divider,
           headerTransparent:true,
           headerTitleStyle:styles.bottomTitle,
+          
           headerRight: () => (            
             <Pressable
               onPress={  () => {                    
