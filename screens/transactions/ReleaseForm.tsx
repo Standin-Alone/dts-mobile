@@ -239,6 +239,15 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
 
 
   });
+
+
+  const multiSelectStyle = {scrollView:{height:20},
+                            chipContainer:{left:15,width:(Layout.window.width / 100) * 85},
+                            chipsWrapper:{top:30,height:1000},                            
+                            button:{backgroundColor:Colors.new_color_palette.yellow},                      
+                            selectToggle:{width: (Layout.window.width / 100) * 85,left:20,borderWidth:1,borderColor:Colors.new_color_palette.orange}
+                            
+                          }     
   // design start here
   return (
 
@@ -290,7 +299,11 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
                 {/* <Text style={styles.detailTitle}>Remarks:</Text> */}
               </View>
               <View style={styles.titleView}>
+<<<<<<< HEAD
                 {/* <Text style={styles.titleValue}>None</Text> */}
+=======
+                <Text style={styles.titleValue}>{item.remarks}</Text>
+>>>>>>> 34cd45e3cd1641b7177f13b548a4c6feda8598d0
               </View>
               
             
@@ -309,12 +322,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
                   onSelectedItemsChange={setSelectedRecipients}
                   selectedItems={selectedRecipients}
                   highlightChildren={true}
-                  styles={{scrollView:{height:20},
-                            chipContainer:{left:15},
-                            chipsWrapper:{top:30,height:1000},
-                            button:{backgroundColor:Colors.new_color_palette.yellow},
-                            selectToggle:{left:20,width: (Layout.window.width / 100) * 85,top:5}
-                        }}
+                  styles={multiSelectStyle}
                   
                 />
               </ScrollView>
@@ -409,6 +417,7 @@ const styles = StyleSheet.create({
   infoCard: {
     top: 20,
     backgroundColor: Colors.new_color_palette.main_background,
+
     width: (Layout.window.width / 100) * 95,
     height: (Layout.window.height / 100) * 75,
     borderRadius: 15,
@@ -418,10 +427,12 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     top: 100,
+    
   },
   bottomTitle: {
     color: Colors.new_color_palette.orange,
     fontSize: 20,
+    
   },
   confirmButton: {
     backgroundColor: 'white',
@@ -436,9 +447,9 @@ const styles = StyleSheet.create({
     
   },
   recipient_office_select:{
-    top:5,
+    top:30,
     height: (Layout.window.height / 100) * 75,
-    
+   
     
     
   }
