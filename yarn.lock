@@ -3372,6 +3372,15 @@ expo-constants@~12.1.1, expo-constants@~12.1.2:
     expo-modules-core "~0.4.4"
     uuid "^3.3.2"
 
+expo-document-picker@~10.0.3:
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-10.0.3.tgz#80697fd13dcb6d4975658f8c7eddc24af2a94b76"
+  integrity sha512-upH2A+1s7mf54rWDDpngNWITKQDd/eiMOjprfcnoRj1/GTx6crMDKaVd9vNEir0z2K7ZYULj8hapGAAMHLTglA==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    expo-modules-core "~0.4.4"
+    uuid "^3.3.2"
+
 expo-error-recovery@~3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/expo-error-recovery/-/expo-error-recovery-3.0.3.tgz#43ded4320ed3a1136f976ed07805303b6069c618"
@@ -3400,6 +3409,13 @@ expo-image-loader@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-3.0.0.tgz#5ada47a0f90f8dec1777520d36e35c65155d9ea9"
   integrity sha512-r4D+uLCf5vm5A2JIbF1Bc9FjYKrYGSLShbFB1MUvZ4BpSXJPRsprYZ9veUBVzzhh8hr23ahTFjMzp3nC57iREw==
+
+expo-intent-launcher@~10.0.3:
+  version "10.0.3"
+  resolved "https://registry.yarnpkg.com/expo-intent-launcher/-/expo-intent-launcher-10.0.3.tgz#dd9350119779d1843da60c02f1a3980ccc5e8316"
+  integrity sha512-nqHb0HuzASzIR19SXTc/t3hn1pt8vMCaqfXvtP4jEDg8D7DTHOvS+SuXmNV9RnUEO/RF/XY8rmi6tLaNrjgCCA==
+  dependencies:
+    expo-modules-core "~0.4.4"
 
 expo-keep-awake@~10.0.0:
   version "10.0.0"
@@ -6398,6 +6414,13 @@ react-native-dash@^0.0.11:
   dependencies:
     prop-types "^15.5.10"
     react-native-measureme "0.0.2"
+
+react-native-document-picker@^7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-document-picker/-/react-native-document-picker-7.1.1.tgz#87f573918eb46681d1a0be4292f3325c7feda5c2"
+  integrity sha512-lEgyfl+JbU/UCDu8UdagBrC5CC71WTfqCzWyGeALLZiXGHrCJo/5BMqWbAc9PSCeiqNMnFkjcybO/kws5gMkxA==
+  dependencies:
+    invariant "^2.2.4"
 
 react-native-floating-action@^1.22.0:
   version "1.22.0"

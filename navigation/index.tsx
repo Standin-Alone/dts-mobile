@@ -37,6 +37,7 @@ import OTPScreen from '../screens/OTPScreen';
 import QRCodeScreen from '../screens/transactions/QRCodeScreen';
 import ReceiveForm from '../screens/transactions/ReceiveForm';
 import ReleaseForm from '../screens/transactions/ReleaseForm';
+import UploadForm from '../screens/transactions/UploadForm';
 import HistoryScreen from '../screens/transactions/HistoryScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -66,7 +67,7 @@ function RootNavigator() {
 
   return (
     <Root>
-    <Stack.Navigator initialRouteName="SplashScreenContainer" screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}}    mode="modal">    
+    <Stack.Navigator initialRouteName="ReleaseForm" screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}}    mode="modal">    
       
       <Stack.Screen name="SplashScreenContainer" component={SplashScreenContainer} options={{headerShown:false}}/>
       <Stack.Screen name="OTPScreen" component={OTPScreen} options={{headerShown:false}}/>
@@ -74,6 +75,7 @@ function RootNavigator() {
       <Stack.Screen name="QRCodeScreen" component={QRCodeScreen} options = {{headerTitle:'Scan Route Slip QR Code',headerTransparent:true,headerTitleStyle:styles.bottomTitle,headerTintColor:Colors.new_color_palette.orange}}/>
       <Stack.Screen name="ReceiveForm" component={ReceiveForm}/>
       <Stack.Screen name="ReleaseForm" component={ReleaseForm}/>
+      <Stack.Screen name="UploadForm" component={UploadForm}/>
       <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
@@ -118,7 +120,7 @@ function BottomTabNavigator() {
           tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'My Documents',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={Colors.new_color_palette.main_background}/>,          
-          tabBarActiveTintColor: Colors.new_color_palette.fade_background,
+          tabBarActiveTintColor:Colors.new_color_palette.orange,
           tabBarInactiveTintColor:Colors.new_color_palette.divider,
           headerTransparent:true,
           headerTitleStyle:styles.bottomTitle,
@@ -169,7 +171,7 @@ function BottomTabNavigator() {
           tabBarActiveBackgroundColor:Colors.new_color_palette.blue_background,
           title: 'Profile',
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={Colors.new_color_palette.fade_background}  />,
-          tabBarActiveTintColor: Colors.new_color_palette.fade_background,
+          tabBarActiveTintColor: Colors.new_color_palette.orange,
           tabBarInactiveTintColor:Colors.new_color_palette.divider,
           headerTransparent:true,
           headerTitleStyle:styles.bottomTitle,

@@ -17,13 +17,9 @@ import * as ipConfig from '../../ipconfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import DocumentPicker from 'react-native-document-picker';
 
-import { file } from '@babel/types';
-import * as FileSystem from 'expo-file-system';
-import * as IntentLauncher from 'expo-intent-launcher';
 
-export default function ReleaseForm({ navigation, route }: RootStackScreenProps<'ReleaseForm'>) {
+export default function UploadForm({ navigation, route }: RootStackScreenProps<'UploadForm'>) {
 
 
   const [isLoading, setLoading] = new useState(false);
@@ -31,10 +27,8 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
   const [scanned, setScanned] = useState(false);
   const [selectedRecipients, setSelectedRecipients] = useState([]);
   const [recipients, setRecipients] = useState([]);
-  
   const params = route.params;
-  const [files_to_upload,setFilesToUpload] =  useState([]);
-  // let files_to_upload = [];
+
 
   const get_recipients = () => {
 
@@ -48,42 +42,18 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
     
   }
 
-  const pickDocument = async () =>{
-
-    const results = await DocumentPicker.pickMultiple({
-      type: [DocumentPicker.types.images],
-    })
-       console.warn(results);
-      
-      
-
-  }
 
 
   const receiveFormOptions = {
-    headerTitle: 'Release Document',
+    headerTitle: 'Receive Document',
     headerTransparent: true,
     headerTitleStyle: styles.bottomTitle,
     headerTintColor: Colors.new_color_palette.orange,
     headerRight: () => (
-      <View style={{flexDirection:'row'}}>
-      {/* <Pressable
-        onPress={pickDocument}
-        style={({ pressed }) => ({
-          opacity: pressed ? 0.5 : 1,
-        })}>
-        <FontAwesome
-          name="upload"
-          size={25}
-          color={Colors.color_palette.orange}
-          style={{ marginRight: 15 }}
-        />
-      </Pressable> */}
 
       <Pressable
-        onPress={ () => {
-          console.warn(files_to_upload)
-          // navigation.navigate('HistoryScreen', { document_info: params.document_info });
+        onPress={async () => {
+          navigation.navigate('HistoryScreen', { document_info: params.document_info });
         }}
         style={({ pressed }) => ({
           opacity: pressed ? 0.5 : 1,
@@ -95,8 +65,6 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
           style={{ marginRight: 15 }}
         />
       </Pressable>
-      </View>
-      
     ),
 
   };
@@ -110,7 +78,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
 
   // handle release button
   const handleRelease = async () => {
-    console.warn(files_to_upload);
+    console.warn(selectedRecipients);
     if (selectedRecipients.length != 0 ) {
       // show confirmation before receive the document
       Popup.show({
@@ -256,7 +224,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
             <View>
               <Text style={styles.docuInfo}> <Icon name="file" size={20} color={Colors.color_palette.orange} />   Document Information</Text>
             </View>
-         {/* {params.document_info && params.document_info.map((item)=>( */}
+         {params.document_info && params.document_info.map((item)=>(
 
             <ScrollView style={styles.infoCard}>
 
@@ -265,7 +233,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
               </View>
               <View style={styles.titleView}>
                 {/* <Text style={styles.detailValue}>DA-CO-IAS-MO20211025-00001</Text> */}
-                {/* <Text style={styles.detailValue}>{item.document_number}</Text> */}
+                <Text style={styles.detailValue}>{item.document_number}</Text>
               </View>
 
               <View>
@@ -273,7 +241,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
               </View>
               <View style={styles.titleView}>
                 {/* <Text style={styles.titleValue}>RFFA-IMC-On-Boarding-File-Structure </Text> */}
-                {/* <Text style={styles.titleValue}>{item.subject} </Text> */}
+                <Text style={styles.titleValue}>{item.subject} </Text>
               </View>
 
 
@@ -282,21 +250,18 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
               </View>
               <View style={styles.titleView}>
                 {/* <Text style={styles.titleValue}>ICTS SysAdd</Text> */}
-                {/* <Text style={styles.titleValue}>{item.INFO_DIVISION}{'\n'}{item.INFO_SERVICE}</Text> */}
+                <Text style={styles.titleValue}>{item.INFO_DIVISION}{'\n'}{item.INFO_SERVICE}</Text>
               </View>
 
 
               <View >
-                {/* <Text style={styles.detailTitle}>Remarks:</Text> */}
+                <Text style={styles.detailTitle}>Remarks:</Text>
               </View>
               <View style={styles.titleView}>
-                {/* <Text style={styles.titleValue}>None</Text> */}
+                <Text style={styles.titleValue}>None</Text>
               </View>
-              
-            
-              
-             
-              
+
+
               <ScrollView style={styles.recipient_office_select}>
                 <SectionedMultiSelect
                   items={recipients}
@@ -327,7 +292,7 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
 
 
             </ScrollView>
-         {/* ))}  */}
+         ))} 
 
 
                 <View style={{ flex: 1 }}>
@@ -342,7 +307,6 @@ export default function ReleaseForm({ navigation, route }: RootStackScreenProps<
                   onPress={handleRelease}
                 >
                   Release Document
-
                 </Button>
               </View>
               </View>

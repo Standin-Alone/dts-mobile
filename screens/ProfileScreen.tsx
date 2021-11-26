@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     left:80,
     fontSize:15,
     fontWeight:'100',
-    color:Colors.fade,
+    color:Colors.new_color_palette.text ,
 
   },
   innerContainer:{
